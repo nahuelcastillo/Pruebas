@@ -77,6 +77,9 @@ function dibujarLinea(event) {
         ctx.stroke();
         console.log(lineas)
     }
+   
+
+    
 }
 
 /**
@@ -101,22 +104,33 @@ miCanvas.addEventListener('mouseup', pararDibujar, false);
 
 // Eventos pantallas táctiles
 miCanvas.addEventListener('touchstart', empezarDibujo, false);
-miCanvas.addEventListener('touchmove', dibujarLinea, false);
+miCanvas.addEventListener('touchmove', speciall, false);
 
 
+function speciall(){
+    handleTouchMove
+    dibujarLinea
+}
 
 
-someElement.addEventListener(
-    "touchstart",
-    (e) => {
-      // Iterate through the list of touch points and log each touch
-      // point's force.
-      for (let i = 0; i < e.targetTouches.length; i++) {
-        // Add code to "switch" based on the force value. For example
-        // minimum pressure vs. maximum pressure could result in
-        // different handling of the user's input.
-        console.log(`targetTouches[${i}].force = ${e.targetTouches[i].force}`);
-      }
-    },
-    false,
-  );
+ // Function to handle touchmove events
+ function handleTouchMove(e) {
+    // Get the h1 element
+    const h1 = document.getElementById("h1P");
+    
+    // Start with an empty string
+    let content = '';
+    
+    // Iterate over all active touches
+    for (let i = 0; i < e.targetTouches.length; i++) {
+        let touch = e.targetTouches[i];
+        // Check if the force property is available
+        let force = touch.force !== undefined ? touch.force : 'force not supported';
+        // Append the force value to the content string
+        content += `<p> targetTouches[${i}].force = ${force} </p>`;
+    }
+    
+    // Update the innerHTML of the h1 element
+    h1.innerHTML = content;
+}
+
