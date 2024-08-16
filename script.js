@@ -1,136 +1,123 @@
-//======================================================================
-// VARIABLES
-//======================================================================
-let miCanvas = document.querySelector('#pizarra');
-let lineas = [];
-let correccionX = 0;
-let correccionY = 0;
-let pintarLinea = false;
-// Marca el nuevo punto
-let nuevaPosicionX = 0;
-let nuevaPosicionY = 0;
+ //======================================================================
+        // VARIABLES
+        //======================================================================
+        let miCanvas = document.querySelector('#pizarra');
+        let lineas = [];
+        let correccionX = 0;
+        let correccionY = 0;
+        let pintarLinea = false;
+        let nuevaPosicionX = 0;
+        let nuevaPosicionY = 0;
 
-let posicion = miCanvas.getBoundingClientRect()
-correccionX = posicion.x;
-correccionY = posicion.y;
+        let posicion = miCanvas.getBoundingClientRect();
+        correccionX = posicion.x;
+        correccionY = posicion.y;
 
-miCanvas.width = 500;
-miCanvas.height = 500;
+        miCanvas.width = 500;
+        miCanvas.height = 500;
 
-//======================================================================
-// FUNCIONES
-//======================================================================
+        //======================================================================
+        // FUNCIONES
+        //======================================================================
 
-/**
- * Funcion que empieza a dibujar la linea
- */
-function empezarDibujo() {
-    pintarLinea = true;
-    lineas.push([]);
-    const birthday = new Date();
-    console.log(birthday.getHours().toString() + ":" + birthday.getMinutes().toString() + ":" + birthday.getSeconds().toString() + "" + birthday.getMilliseconds());
-
-};
-
-/**
- * Funcion que guarda la posicion de la nueva línea
- */
-function guardarLinea() {
-    lineas[lineas.length - 1].push({
-        x: nuevaPosicionX,
-        y: nuevaPosicionY
-    });
-}
-
-/**
- * Funcion dibuja la linea
- */
-function dibujarLinea(event) {
-    event.preventDefault();
-    if (pintarLinea) {
-        let ctx = miCanvas.getContext('2d')
-        // Estilos de linea
-        ctx.lineJoin = ctx.lineCap = 'round';
-        ctx.lineWidth = 10;
-        // Color de la linea
-        ctx.strokeStyle = '#fff';
-        // Marca el nuevo punto
-        if (event.changedTouches == undefined) {
-            // Versión ratón
-            nuevaPosicionX = event.layerX;
-            nuevaPosicionY = event.layerY;
-        } else {
-            // Versión touch, pantalla tactil
-            nuevaPosicionX = event.changedTouches[0].pageX - correccionX;
-            nuevaPosicionY = event.changedTouches[0].pageY - correccionY;
+        /**
+         * Función que empieza a dibujar la línea
+         */
+        function empezarDibujo() {
+            pintarLinea = true;
+            lineas.push([]);
+            const birthday = new Date();
+            console.log(`${birthday.getHours()}:${birthday.getMinutes()}:${birthday.getSeconds()}:${birthday.getMilliseconds()}`);
         }
-        // Guarda la linea
-        guardarLinea();
-        // Redibuja todas las lineas guardadas
-        ctx.beginPath();
-        lineas.forEach(function (segmento) {
-            ctx.moveTo(segmento[0].x, segmento[0].y);
-            segmento.forEach(function (punto, index) {
-                ctx.lineTo(punto.x, punto.y);
+
+        /**
+         * Función que guarda la posición de la nueva línea
+         */
+        function guardarLinea() {
+            lineas[lineas.length - 1].push({
+                x: nuevaPosicionX,
+                y: nuevaPosicionY
             });
-        });
-        ctx.stroke();
-        console.log(lineas)
-    }
-   
+        }
 
-    
-}
+        /**
+         * Función que dibuja la línea
+         */
+        function dibujarLinea(event) {
+            event.preventDefault();
+            if (pintarLinea) {
+                let ctx = miCanvas.getContext('2d');
+                // Estilos de línea
+                ctx.lineJoin = ctx.lineCap = 'round';
+                ctx.lineWidth = 10;
+                // Color de la línea
+                ctx.strokeStyle = '#fff';
+                // Marca el nuevo punto
+                if (event.changedTouches === undefined) {
+                    // Versión ratón
+                    nuevaPosicionX = event.layerX;
+                    nuevaPosicionY = event.layerY;
+                } else {
+                    // Versión touch, pantalla táctil
+                    nuevaPosicionX = event.changedTouches[0].pageX - correccionX;
+                    nuevaPosicionY = event.changedTouches[0].pageY - correccionY;
+                }
+                // Guarda la línea
+                guardarLinea();
+                // Redibuja todas las líneas guardadas
+                ctx.beginPath();
+                lineas.forEach(function (segmento) {
+                    ctx.moveTo(segmento[0].x, segmento[0].y);
+                    segmento.forEach(function (punto) {
+                        ctx.lineTo(punto.x, punto.y);
+                    });
+                });
+                ctx.stroke();
+                console.log(lineas);
+            }
+        }
 
-/**
- * Funcion que deja de dibujar la linea
- */
-function pararDibujar () {
-    pintarLinea = false;
-    guardarLinea();
-    const birthday = new Date();
-    console.log(birthday.getHours().toString() + ":" + birthday.getMinutes().toString() + ":" + birthday.getSeconds().toString());
+        /**
+         * Función que deja de dibujar la línea
+         */
+        function pararDibujar() {
+            pintarLinea = false;
+            guardarLinea();
+            const birthday = new Date();
+            console.log(`${birthday.getHours()}:${birthday.getMinutes()}:${birthday.getSeconds()}`);
+        }
 
-}
+        //======================================================================
+        // EVENTOS
+        //======================================================================
 
-//======================================================================
-// EVENTOS
-//======================================================================
+        // Eventos ratón
+        miCanvas.addEventListener('mousedown', empezarDibujo, false);
+        miCanvas.addEventListener('mousemove', dibujarLinea, false);
+        miCanvas.addEventListener('mouseup', pararDibujar, false);
 
-// Eventos raton
-miCanvas.addEventListener('mousedown', empezarDibujo, false);
-miCanvas.addEventListener('mousemove', dibujarLinea, false);
-miCanvas.addEventListener('mouseup', pararDibujar, false);
+        // Eventos pantallas táctiles
+        miCanvas.addEventListener('touchstart', empezarDibujo, false);
+        miCanvas.addEventListener('touchmove', dibujarLinea, false);
+        miCanvas.addEventListener('touchmove', handleTouchMove, false);
 
-// Eventos pantallas táctiles
-miCanvas.addEventListener('touchstart', empezarDibujo, false);
-miCanvas.addEventListener('touchmove', speciall, false);
-
-
-function speciall(){
-    handleTouchMove
-    dibujarLinea
-}
-
-
- // Function to handle touchmove events
- function handleTouchMove(e) {
-    // Get the h1 element
-    const h1 = document.getElementById("h1P");
-    
-    // Start with an empty string
-    let content = '';
-    
-    // Iterate over all active touches
-    for (let i = 0; i < e.targetTouches.length; i++) {
-        let touch = e.targetTouches[i];
-        // Check if the force property is available
-        let force = touch.force !== undefined ? touch.force : 'force not supported';
-        // Append the force value to the content string
-        content += `<p style="color:red"> targetTouches[${i}].force = ${force} </p>`;
-    }
-    
-    // Update the innerHTML of the h1 element
-    h1.innerHTML = content;
-}
-
+        // Función para manejar eventos touchmove
+        function handleTouchMove(e) {
+            // Obtiene el elemento h1
+            const h1 = document.getElementById("h1P");
+            
+            // Empieza con una cadena vacía
+            let content = '';
+            
+            // Itera sobre todos los toques activos
+            for (let i = 0; i < e.targetTouches.length; i++) {
+                let touch = e.targetTouches[i];
+                // Verifica si la propiedad force está disponible
+                let force = touch.force !== undefined ? touch.force : 'force no soportada';
+                // Añade el valor de la fuerza a la cadena de contenido
+                content += `<p style="color:red"> targetTouches[${i}].force = ${force} </p>`;
+            }
+            
+            // Actualiza el innerHTML del elemento h1
+            h1.innerHTML = content;
+        }
