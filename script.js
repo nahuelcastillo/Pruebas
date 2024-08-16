@@ -127,7 +127,7 @@ function speciall(){
         // Check if the force property is available
         let force = touch.force !== undefined ? touch.force : 'force not supported';
         // Append the force value to the content string
-        content += `<p> targetTouches[${i}].force = ${force} </p>`;
+        content += `<p style="color:red"> targetTouches[${i}].force = ${force} </p>`;
     }
     
     // Update the innerHTML of the h1 element
