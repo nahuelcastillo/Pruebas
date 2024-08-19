@@ -17,6 +17,7 @@ correccionY = posicion.y;
 miCanvas.width = 500;
 miCanvas.height = 500;
 
+
 //======================================================================
 // FUNCIONES
 //======================================================================
@@ -27,9 +28,6 @@ miCanvas.height = 500;
 function empezarDibujo() {
     pintarLinea = true;
     lineas.push([]);
-    const birthday = new Date();
-    console.log(birthday.getHours().toString() + ":" + birthday.getMinutes().toString() + ":" + birthday.getSeconds().toString() + "" + birthday.getMilliseconds());
-
 };
 
 /**
@@ -38,7 +36,8 @@ function empezarDibujo() {
 function guardarLinea() {
     lineas[lineas.length - 1].push({
         x: nuevaPosicionX,
-        y: nuevaPosicionY
+        y: nuevaPosicionY,
+        temp: timeSegMiliseg()
     });
 }
 
@@ -75,9 +74,7 @@ function dibujarLinea(event) {
             });
         });
         ctx.stroke();
-        console.log(lineas)
     }
-   
 }
 
 /**
@@ -86,10 +83,16 @@ function dibujarLinea(event) {
 function pararDibujar () {
     pintarLinea = false;
     guardarLinea();
-    const birthday = new Date();
-    console.log(birthday.getHours().toString() + ":" + birthday.getMinutes().toString() + ":" + birthday.getSeconds().toString());
-
 }
+
+
+/*Funcion que permite tener segundos y milisegundos */
+function timeSegMiliseg(){
+    var date = new Date()
+    var TimeData =  date.getSeconds() + ":" +  date.getMilliseconds() 
+    return TimeData   
+}
+
 
 //======================================================================
 // EVENTOS
