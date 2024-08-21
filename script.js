@@ -18,32 +18,32 @@ miCanvas.width = 500;
 miCanvas.height = 500;
 
 
-//======================================================================
-// FUNCIONES
-//======================================================================
+var text =  document.getElementById("pruebita")
 
-/**
- * Funcion que empieza a dibujar la linea
- */
+/* FUNCIONES
+
+
+/* Funcion que empieza a dibujar la linea */
+
 function empezarDibujo() {
     pintarLinea = true;
     lineas.push([]);
 };
 
-/**
- * Funcion que guarda la posicion de la nueva línea
- */
+/* Funcion que guarda la posicion de la nueva línea */
+
 function guardarLinea() {
     lineas[lineas.length - 1].push({
         x: nuevaPosicionX,
         y: nuevaPosicionY,
         temp: timeSegMiliseg()
     });
+
+    text.innerHTML = timeSegMiliseg()
 }
 
-/**
- * Funcion dibuja la linea
- */
+/*  Funcion dibuja la linea */
+
 function dibujarLinea(event) {
     event.preventDefault();
     if (pintarLinea) {
@@ -77,9 +77,8 @@ function dibujarLinea(event) {
     }
 }
 
-/**
- * Funcion que deja de dibujar la linea
- */
+/* Funcion que deja de dibujar la linea */
+
 function pararDibujar () {
     pintarLinea = false;
     guardarLinea();
@@ -87,6 +86,7 @@ function pararDibujar () {
 
 
 /*Funcion que permite tener segundos y milisegundos */
+
 function timeSegMiliseg(){
     var date = new Date()
     var TimeData =  date.getSeconds() + ":" +  date.getMilliseconds() 
@@ -94,9 +94,7 @@ function timeSegMiliseg(){
 }
 
 
-//======================================================================
 // EVENTOS
-//======================================================================
 
 // Eventos raton
 miCanvas.addEventListener('mousedown', empezarDibujo, false);
