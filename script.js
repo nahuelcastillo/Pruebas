@@ -39,7 +39,7 @@ function guardarLinea() {
         temp: timeSegMiliseg()
     });
 
-    text.innerHTML = timeSegMiliseg()
+    text.innerHTML = timeSegMiliseg() + `<p> Posicion x = ${nuevaPosicionX}  Posicion y = ${nuevaPosicionY}  </p>`
 }
 
 /*  Funcion dibuja la linea */
